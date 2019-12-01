@@ -28,7 +28,13 @@ public class InventoryListener implements Listener {
 			Player p = (Player) e.getWhoClicked();
 			e.setCancelled(true);
 			if(e.getSlot() == 10) {
-				//Enable BleadNight
+				ZombieListener.SpawnZombies();
+				for(Player pl: Bukkit.getOnlinePlayers()) {
+					pl.sendMessage("§4§m-----------------------------------");
+					pl.sendMessage("§cBleadnight §7is §cgeactiveerd.");
+					pl.sendMessage("§4§m-----------------------------------");
+				}
+				p.sendMessage("§cBleadNight §7is geactiveerd.");
 				p.closeInventory();
 			}
 			if(e.getSlot() == 13) {

@@ -11,6 +11,7 @@ public class BleadNight extends JavaPlugin implements Listener  {
 	public void onEnable() {
 		Main = this;
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+		getServer().getPluginManager().registerEvents(new ZombieListener(), this);
 		getServer().getPluginManager().registerEvents(new BlockPlaceListener(), this);
 		getCommand("bleadnight").setExecutor(new BleadNightCommand());
 		System.out.println("BleadNight Online");
