@@ -14,15 +14,18 @@ public class BlockPlaceListener implements Listener {
 	@EventHandler
 	public void BlockPlace(BlockPlaceEvent e) {
 		if(e.getPlayer().hasPermission("BleadNight.spBandiet")) {
-			if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("§cBleadNight Spawnpoint Bandieten")) {
-				Location loc = e.getBlockPlaced().getLocation();
-				List<String> Spawnpoints = BleadNight.Main.getConfig().getStringList("SpawnPoints.Bandieten.SpawnPoints");
-				if(Spawnpoints == null) Spawnpoints = new ArrayList<String>();
-				Spawnpoints.add(loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getWorld().getName());
-				BleadNight.Main.getConfig().set("SpawnPoints.Bandieten.SpawnPoints", Spawnpoints);
-				BleadNight.Main.saveConfig();
-				e.getPlayer().sendMessage("§cBleadNight §7Spawnpoint toegevoegd (§c" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ", " + loc.getWorld().getName() + "§7)");
-				
+			if(e.getPlayer().getItemInHand().getItemMeta().hasDisplayName()) {
+				if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase("§cBleadNight Spawnpoint Bandieten")) {
+					e.setCancelled(true);
+					Location loc = e.getBlockPlaced().getLocation();
+					List<String> Spawnpoints = BleadNight.Main.getConfig().getStringList("SpawnPoints.Bandieten.SpawnPoints");
+					if(Spawnpoints == null) Spawnpoints = new ArrayList<String>();
+					Spawnpoints.add(loc.getX() + ";" + loc.getY() + ";" + loc.getZ() + ";" + loc.getWorld().getName());
+					BleadNight.Main.getConfig().set("SpawnPoints.Bandieten.SpawnPoints", Spawnpoints);
+					BleadNight.Main.saveConfig();
+					e.getPlayer().sendMessage("§cBleadNight §7Spawnpoint toegevoegd (§c" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + ", " + loc.getWorld().getName() + "§7)");
+					
+				}
 			}
 		}
 	}

@@ -29,12 +29,15 @@ public class InventoryListener implements Listener {
 			e.setCancelled(true);
 			if(e.getSlot() == 10) {
 				ZombieListener.SpawnZombies();
+				BossBarCreate.createbossbar();
+				BleadNight.Main.saveConfig();
+				BleadNight.Main.getConfig().set("Bandieten.AantalOver", BleadNight.Main.getConfig().getInt("Bandieten.AantalErSpawnen"));
 				for(Player pl: Bukkit.getOnlinePlayers()) {
 					pl.sendMessage("§4§m-----------------------------------");
 					pl.sendMessage("§cBleadnight §7is §cgeactiveerd.");
 					pl.sendMessage("§4§m-----------------------------------");
 				}
-				p.sendMessage("§cBleadNight §7is geactiveerd.");
+				BleadNight.BleadNightE = true;
 				p.closeInventory();
 			}
 			if(e.getSlot() == 13) {
@@ -93,7 +96,7 @@ public class InventoryListener implements Listener {
 				
 			}
 			if(e.getSlot() == 16) {
-				//Disable BleadNight
+				BossBarCreate.Einde();
 				p.closeInventory();
 			}
 		}
@@ -122,8 +125,13 @@ public class InventoryListener implements Listener {
 				}
 				if(e.getSlot() == 13) {
 					p.closeInventory();
-					p.sendMessage("§cBleadNight §7Typ de damage die de bandieten doen. (Hele getallen bv. 221) of typ§c cancel");
+					p.sendMessage("§cBleadNight §7Typ de damagemultiplyer die de bandieten doen. (Hele getallen bv. 221) of typ§c cancel");
 					ChangeDamage.put(p, true);
+				}
+				if(e.getSlot() == 15) {
+					p.closeInventory();
+					InventoryLoot.InventoryCreate((Player) e.getWhoClicked());
+					p.sendMessage("§cLet op er kan maar 1 iemand tegelijk loot toevoegen / wijzigen!");
 				}
 				if(e.getSlot() == 17) {
 					p.closeInventory();
@@ -151,7 +159,7 @@ public class InventoryListener implements Listener {
 					ChangeHealth.put(p, true);
 					return;
 				}
-				BleadNight.Main.getConfig().set("Bandieten.Health", i);
+				BleadNight.Main.getConfig().set("Bandieten.Health", i*2);
 				BleadNight.Main.saveConfig();
 				p.sendMessage("§cBleadNight §7Health is verzet naar §c" + i + "❤");
 				
@@ -170,13 +178,13 @@ public class InventoryListener implements Listener {
 					String mes = e.getMessage();
 					i = (int) Integer.parseInt(mes);
 				}catch(NumberFormatException ee) {
-					p.sendMessage("§cBleadNight §7Typ de health die de bandieten krijgen. (Hele getallen bv. 221)");
+					p.sendMessage("§cBleadNight §7Typ de damagemultiplyer die de bandieten doen. (Hele getallen bv. 221) of typ§c cancel");
 					ChangeDamage.put(p, true);
 					return;
 				}
 				BleadNight.Main.getConfig().set("Bandieten.Damage", i);
 				BleadNight.Main.saveConfig();
-				p.sendMessage("§cBleadNight §7Damage is verzet naar §c" + i);
+				p.sendMessage("§cBleadNight §7Damagemultiplyer is verzet naar §c" + i);
 				
 				
 			}
