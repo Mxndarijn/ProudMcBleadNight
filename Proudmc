@@ -1,6 +1,0 @@
-	public void spawn(Player pl, String world ) {
-		Location locatio = new Location(pl.getWorld(), pl.getLocation().getX(),pl.getLocation().getY() , pl.getLocation().getZ());
-		Zombie zomb = getServer().getWorld("Plugin" ).spawn(locatio, Zombie.class);
-		int health = getConfig().getInt("Healthbandiet");
-		zomb.setHealth(health);
-	}
