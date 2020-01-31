@@ -91,7 +91,6 @@ public class InventoryListener implements Listener {
 	    	    im.setLore(lore);
 				is.setItemMeta(im);
 				inv.setItem(17, is);
-				
 				p.openInventory(inv);
 				
 			}

@@ -80,6 +80,33 @@ public class InventoryLoot implements Listener {
 				p.closeInventory();
 				ChangeAantal.put(p, true);
 			}
+			if(e.getSlot() == 16) {
+				List<String> LootItems = BleadNight.Main.getConfig().getStringList("LootItems");
+				Inventory inv = Bukkit.getServer().createInventory(null, 54, "§7BleadNight §cLoot Lijst");
+				ItemStack is = new ItemStack(Material.PAPER);
+				ItemMeta im = is.getItemMeta();
+				im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				im.setDisplayName("§cKlik op een item om hem te verwijderen.");
+				ArrayList<String> lore = new ArrayList<String>();
+			    
+			    im.setLore(lore);
+				is.setItemMeta(im);
+				inv.setItem(4, is);
+				
+				lore.clear();
+				for(int i = 0; i < LootItems.size(); i++) {
+					String s = LootItems.get(i);
+					String string[] = s.split(";-;");
+					//int ii = Integer.parseInt(string[1]);
+					int n = Integer.parseInt(string[2]);
+					ItemStack iss = BleadNight.Main.getConfig().getItemStack("ItemStacks." + n);
+					lore = (ArrayList<String>) iss.getItemMeta().getLore();
+					lore.add("§cConfig: ");
+					inv.setItem(18 + i, iss);
+				}
+				p.openInventory(inv);
+			}
 			if(e.getSlot() == 13) {
 				Double Optelsom = 0.0;
 				List<String> LootItems = BleadNight.Main.getConfig().getStringList("LootItems");
@@ -90,7 +117,6 @@ public class InventoryLoot implements Listener {
 					Optelsom = Optelsom + ii;
 				}
 				Procent = 100 / Optelsom;
-				Bukkit.broadcastMessage(Procent + " ;" + Optelsom);
 				DecimalFormat df = new DecimalFormat("###.##");
 				
 				
@@ -141,7 +167,7 @@ public class InventoryLoot implements Listener {
 					if(i > 9 && i < 18) inv.setItem(35 + i, is);
 				}
 				
-				p.openInventory(inv);
+				p.openInventory(inv);	
 			}
 		}
 	}
@@ -181,8 +207,6 @@ public class InventoryLoot implements Listener {
 			String mes = e.getMessage();
 			Naam = mes;
 			p.sendMessage("§cBleadNight §7naam is verzet naar §c" + mes);
-			p.sendMessage(Naam + " : " + Aantal + " : ");
-			p.getInventory().addItem(LootIS);
 			
 			List<String> LootItems = BleadNight.Main.getConfig().getStringList("LootItems");
 			if(LootItems == null) LootItems = new ArrayList<String>();
@@ -200,7 +224,26 @@ public class InventoryLoot implements Listener {
 	@EventHandler
 	public void Click(InventoryClickEvent e) {
 		if(e.getInventory().getName().contains("§7BleadNight §cLoot Lijst")) {
-			e.setCancelled(true);
+			if(e.getSlot() > 8) {	
+				e.setCancelled(true);
+				if(e.getCurrentItem().getType() == Material.AIR) return;
+				if(e.getCurrentItem().getItemMeta().hasDisplayName() && e.getCurrentItem().getItemMeta().hasLore()) {
+					if(e.getCurrentItem().getItemMeta().getDisplayName().contains("Item") &&e.getCurrentItem().getItemMeta().getLore().contains("Naam")) {
+						return;
+					}
+				}
+				Inventory inv = Bukkit.getServer().createInventory(null, 27, "§7BleadNight §cItem Verwijderen");
+				ItemStack is = new ItemStack(Material.BARRIER);
+				ItemMeta im = is.getItemMeta();
+				im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+				im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+				im.setDisplayName("§cVerwijder het item?");
+				ArrayList<String> lore = new ArrayList<String>();
+			    im.setLore(lore);
+				is.setItemMeta(im);
+				inv.setItem(4, is);
+				
+			}
 		}
 	}
 	
